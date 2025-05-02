@@ -1,6 +1,6 @@
 {
   "database": {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port": 3307,
     "user": "root",
     "password": "1234",
@@ -12,8 +12,8 @@
     "host": "smtp.ethereal.email",
     "port": 587,
     "auth": {
-      "user": "jeanne.glover@ethereal.email",
-      "pass": "gXEcbbDNY8kDeXxUEN"
+      "user": "gianni70@ethereal.email",
+      "pass": "XeauuFvFF1ghVHhXEH"
     }
   }
 }
