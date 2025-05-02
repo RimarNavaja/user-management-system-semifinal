@@ -1,19 +1,19 @@
 {
   "database": {
     "host": "127.0.0.1",
-    "port": 3307,
+    "port": 3306,
     "user": "root",
-    "password": "1234",
+    "password": "1010",
     "database": "user-management-system"
   },
-  "secret": "THIS_IS_A_SECRET_KEY_CHANGE_IT_IN_PRODUCTION",
+  "secret": "semifinal-project",
   "emailFrom": "info@user-management-system.com",
   "smtpOptions": {
     "host": "smtp.ethereal.email",
     "port": 587,
     "auth": {
-      "user": "gianni70@ethereal.email",
-      "pass": "XeauuFvFF1ghVHhXEH"
+      "user": "albertha.yost44@ethereal.email",
+      "pass": "27hJMTztdYX17ahSeZ"
     }
   }
 }
