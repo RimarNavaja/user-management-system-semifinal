@@ -41,7 +41,7 @@ async function authenticate({ email, password, ipAddress }) {
     throw "Account not verified";
   }
 
-  // TASK 4: Wrong password
+  // TASK 4: Wrong password - Ensure clear error message
   if (!(await bcrypt.compare(password, account.passwordHash))) {
     throw "Password is incorrect";
   }
@@ -91,25 +91,44 @@ async function revokeToken({ token, ipAddress }) {
 async function register(params, origin) {
   // Validate
   if (await db.Account.findOne({ where: { email: params.email } })) {
-    // Send already registered error in email to prevent account enumeration
     return await sendAlreadyRegisteredEmail(params.email, origin);
   }
 
   const account = new db.Account(params);
-  account.status = params.status || "Active"; // Set status
+  account.status = params.status || "Active";
 
   // First registered account is an admin
   const isFirstAccount = (await db.Account.count()) === 0;
   account.role = isFirstAccount ? Role.Admin : Role.User;
-  account.verificationToken = randomTokenString();
+
+  // Auto verify first account
+  if (isFirstAccount) {
+    account.verified = Date.now();
+    account.verificationToken = null;
+  } else {
+    account.verificationToken = randomTokenString();
+  }
 
   // Hash password
   account.passwordHash = await hash(params.password);
-
   await account.save();
 
-  // Send email
+  // Send different response for first account
+  if (isFirstAccount) {
+    return {
+      message: "Admin registration successful. You can login directly.",
+      firstUser: true,
+      email: account.email,
+    };
+  }
+
+  // Send verification email only if not first account
   await sendVerificationEmail(account, origin);
+  return {
+    message:
+      "Registration successful, please check your email for verification instructions",
+    firstUser: false,
+  };
 }
 
 async function verifyEmail({ token }) {
