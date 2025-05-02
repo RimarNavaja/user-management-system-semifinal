@@ -30,7 +30,7 @@ import { HomeComponent } from "./home";
     },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    // fakeBackendProvider,
+    //fakeBackendProvider,
     // this is used to simulate a backend server for development purposes
     // it should be removed in production
   ],

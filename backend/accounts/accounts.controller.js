@@ -101,12 +101,14 @@ function registerSchema(req, res, next) {
 function register(req, res, next) {
   accountService
     .register(req.body, req.get("origin"))
-    .then(() =>
+    .then((response) => {
+      // Send response based on whether it's the first user
       res.json({
-        message:
-          "Registration successful, please check your email for verification instructions",
-      })
-    )
+        message: response.message,
+        firstUser: response.firstUser,
+        email: response.email,
+      });
+    })
     .catch(next);
 }
 
