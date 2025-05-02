@@ -56,7 +56,22 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl(returnUrl);
         },
         error: (error) => {
-          this.alertService.error(error);
+          // Custom error handling for specific cases
+          if (typeof error === "string") {
+            if (error === "Email does not exist") {
+              this.alertService.error("Email does not exist");
+            } else if (error === "Account not verified") {
+              this.alertService.error(
+                `Your account has not been verified. <a routerLink="/account/verify-email">Click here to verify your email</a>`
+              );
+            } else if (error === "Password is incorrect") {
+              this.alertService.error("Password is incorrect");
+            } else {
+              this.alertService.error(error);
+            }
+          } else {
+            this.alertService.error("Login failed");
+          }
           this.loading = false;
         },
       });
