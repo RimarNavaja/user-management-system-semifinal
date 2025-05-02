@@ -7,5 +7,6 @@ export interface Account {
   lastName: string;
   email: string;
   role: Role;
+  status?: string;
   jwtToken?: string;
 }

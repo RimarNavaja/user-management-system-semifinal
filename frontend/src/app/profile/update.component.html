@@ -59,6 +59,20 @@
       </div>
     </div>
   </div>
+  <div class="form-group">
+    <label>Status</label>
+    <select
+      formControlName="status"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f.status.errors }"
+    >
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+    <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
+      <div *ngIf="f.status.errors.required">Status is required</div>
+    </div>
+  </div>
   <h3 class="pt-3">Change Password</h3>
   <p>Leave blank to keep the same password</p>
   <div class="form-row">
@@ -101,18 +115,6 @@
         class="spinner-border spinner-border-sm mr-1"
       ></span>
       Update
-    </button>
-    <button
-      type="button"
-      (click)="onDelete()"
-      [disabled]="deleting"
-      class="btn btn-danger mr-2"
-    >
-      <span
-        *ngIf="deleting"
-        class="spinner-border spinner-border-sm mr-1"
-      ></span>
-      Delete
     </button>
     <a [routerLink]="['../']" href="#" class="btn btn-link">Cancel</a>
   </div>

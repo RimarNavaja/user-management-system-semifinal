@@ -24,7 +24,7 @@ router.get("/", authorize(Role.Admin), getAll);
 router.get("/:id", authorize(), getById);
 router.post("/", authorize(Role.Admin), createSchema, create);
 router.put("/:id", authorize(), updateSchema, update);
-router.delete("/:id", authorize(), _delete);
+// router.delete("/:id", authorize(), _delete); // Remove DELETE route
 
 module.exports = router;
 
@@ -204,6 +204,7 @@ function createSchema(req, res, next) {
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
     role: Joi.string().valid(Role.Admin, Role.User).required(),
+    status: Joi.string().valid("Active", "Inactive").required(), // Add status
   });
   validateRequest(req, next, schema);
 }
@@ -223,6 +224,7 @@ function updateSchema(req, res, next) {
     email: Joi.string().email().empty(""),
     password: Joi.string().min(6).empty(""),
     confirmPassword: Joi.string().valid(Joi.ref("password")).empty(""),
+    status: Joi.string().valid("Active", "Inactive").empty(""), // Add status
   };
 
   // only admins can update role
@@ -246,17 +248,7 @@ function update(req, res, next) {
     .catch(next);
 }
 
-function _delete(req, res, next) {
-  // users can delete their own account and admins can delete any account
-  if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  accountService
-    .delete(req.params.id)
-    .then(() => res.json({ message: "Account deleted successfully" }))
-    .catch(next);
-}
+// Remove _delete handler
 
 // helper functions
 
