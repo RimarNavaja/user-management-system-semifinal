@@ -28,12 +28,22 @@ async function authenticate({ email, password, ipAddress }) {
     where: { email },
   });
 
-  if (
-    !account ||
-    !account.isVerified ||
-    !(await bcrypt.compare(password, account.passwordHash))
-  ) {
-    throw "Email or password is incorrect";
+  // TASK 2: Email does not exist
+  if (!account) {
+    throw "Email does not exist";
+  }
+
+  // TASK 1: Bypass verification for first user
+  const isFirstAccount = (await db.Account.count()) === 1 && account.id === 1;
+
+  // TASK 3: Not verified
+  if (!isFirstAccount && !account.isVerified) {
+    throw "Account not verified";
+  }
+
+  // TASK 4: Wrong password
+  if (!(await bcrypt.compare(password, account.passwordHash))) {
+    throw "Password is incorrect";
   }
 
   // Authentication successful, generate jwt and refresh tokens
