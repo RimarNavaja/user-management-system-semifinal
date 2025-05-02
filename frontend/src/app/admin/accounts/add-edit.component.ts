@@ -31,12 +31,15 @@ export class AddEditComponent implements OnInit {
 
     this.form = this.formBuilder.group(
       {
-        title: ["", Validators.required],
-        firstName: ["", Validators.required],
-        lastName: ["", Validators.required],
-        email: ["", [Validators.required, Validators.email]],
-        role: ["", Validators.required],
-        status: ["Active", Validators.required], // Add status field
+        title: [this.isAddMode ? "" : undefined, Validators.required],
+        firstName: [this.isAddMode ? "" : undefined, Validators.required],
+        lastName: [this.isAddMode ? "" : undefined, Validators.required],
+        email: [
+          this.isAddMode ? "" : undefined,
+          [Validators.required, Validators.email],
+        ],
+        role: [this.isAddMode ? "User" : undefined, Validators.required],
+        status: [this.isAddMode ? "Inactive" : undefined, Validators.required],
         password: [
           "",
           [
@@ -55,7 +58,17 @@ export class AddEditComponent implements OnInit {
       this.accountService
         .getById(this.id)
         .pipe(first())
-        .subscribe((x) => this.form.patchValue(x));
+        .subscribe((x) => {
+          // Patch all fields except password/confirmPassword
+          this.form.patchValue({
+            title: x.title,
+            firstName: x.firstName,
+            lastName: x.lastName,
+            email: x.email,
+            role: x.role,
+            status: x.status || "Inactive",
+          });
+        });
     }
   }
 
