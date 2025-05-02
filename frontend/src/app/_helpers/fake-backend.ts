@@ -78,6 +78,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!account.isVerified) {
         return error("Account not verified");
       }
+      if (account.status && account.status === "Inactive") {
+        return error("Account is inactive");
+      }
       if (account.password !== password) {
         return error("Password is incorrect");
       }

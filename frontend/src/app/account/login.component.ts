@@ -66,6 +66,10 @@ export class LoginComponent implements OnInit {
               );
             } else if (error === "Password is incorrect") {
               this.alertService.error("Password is incorrect");
+            } else if (error === "Account is inactive") {
+              this.alertService.error(
+                "Your account is inactive. Please contact support."
+              );
             } else {
               this.alertService.error(error);
             }
